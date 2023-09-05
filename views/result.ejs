@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultat</title>
+</head>
+<body>
+    <h1>Résultat du Questionnaire</h1> 
+
+    <% if (typeof averageScore !== 'undefined') { %>
+        <h2>Moyenne des réponses correctes:</h2>
+        <p><%= averageScore.toFixed(2) %>/20</p>
+        <% if (averageScore >= 14) { %> <!-- 14 points sur 20 pour réussir -->
+            <p>Félicitations, vous avez réussi le test!</p>
+        <% } else { %>
+            <p>Vous n'avez pas atteint le seuil de réussite.</p>
+        <% } %>
+    <% } else { %>
+        <p>Erreur lors du calcul de la moyenne.</p>
+    <% } %>
+    
+    <a href="/blogs2">Revenir au Questionnaire</a>
+</body>
+</html>

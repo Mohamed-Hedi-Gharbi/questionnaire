@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style1.css">
+    <link rel="stylesheet" href="css/home.css">
+    <title>Home</title>
+</head>
+<body>
+    <main>
+        <section id="newQuestion">
+            <a href="#new">new Questions</a>
+        </section>
+        <section id="history">
+            History
+        </section>
+
+        <div id="modal-container" class="hidden">
+            <a href="/question/js">JavaScript(Node js)</a>
+            <a href="/question/cs">C#</a>
+            <a href="/question/php">PHP</a>
+        </div>
+
+    </main>
+    <script>
+
+        window.addEventListener('popstate', e => {
+            const url = window.location;
+            const url_hash = url.hash.split("#")[1];
+            const modalContainer = document.querySelector('#modal-container')
+            console.log({ url_hash });
+            if(url_hash === "new"){
+                modalContainer.classList.remove('hidden');
+                modalContainer.classList.add('modal');
+            } else {
+                modalContainer.classList.remove('modal');
+                modalContainer.classList.add('hidden');
+            }
+        });
+
+    </script>
+</body>
+</html>

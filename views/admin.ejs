@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+    <link rel="stylesheet" type="text/css" href="css/admin.css">
+</head>
+<body>
+    <header>
+        <h1>Tableau de bord de l'administrateur</h1>
+        <a id="acceuil" href="/">Accueil</a>
+        <a id="logout" href="/logout">Déconnexion</a>
+    </header>
+
+    <div class="content">
+        <h2>Liste des clients</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Test</th>
+                    <th>Moyenne</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                    <tr>
+                        <td>Name</td>
+                        <td>Email</td>
+                        <td>Test</td>
+                        <td>Moyenne</td>
+                        <td>
+                            <a href="/admin/edit/">Éditer</a>
+                            <a href="/admin/delete/" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce client ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

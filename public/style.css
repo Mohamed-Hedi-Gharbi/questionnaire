@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    background: var(--background);
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 100px;
+    color: #333;
+}
+
+form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+ol {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.title {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+input[type="submit"] {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+
+/* Style du header fixe */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+#logout {
+    background-color: #d9534f;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: black;
+    /* Couleur du texte en noir */
+    text-decoration: none;
+    /* Supprimer la ligne de texte */
+    border-bottom: 1px solid black;
+    /* Ajouter une ligne relevée */
+}
+
+#timer {
+    font-size: 18px;
+    position: absolute;
+    left: 85%;
+    /* Ajoutez la valeur de décalage souhaitée */
+    top: 50%;
+    /* Centrer verticalement */
+    transform: translateY(-50%);
+    /* Centrer verticalement */
+}
