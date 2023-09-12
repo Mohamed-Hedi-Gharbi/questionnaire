@@ -1,54 +1,114 @@
 const { Router } = require('express');
-const { getAllQuizz, addQuizz } = require('../controllers/adminControllers');
+
+const {
+  getInitialQuizz,
+  getSpecificQuizz,
+  addQuizz,
+  updateQuizz,
+  deleteQuizz,
+  isAllowed
+} = require('../controllers/adminControllers');
+
+const isLanguageSupported = require('../utils/isLanguageSupported');
 
 const router = Router();
 
-router.post('/approve-users', async (req, res) => { res.send() });
-
 router.get('/quizz/:language', async (req, res) => {
-
   try {
     const language = (req.params.language).toLocaleLowerCase();
-    const response = await getAllQuizz(language, req.body.id);  
-    let listOfQuizz = [];
-    
-    if(Array.isArray(response.body)){
-      for(let quizz of response.body){
-        listOfQuizz.push({ language: quizz.language, answer: quizz.answers, id: quizz._id });
+    if (isLanguageSupported(language))
+    {
+      
+      const quizz = await getInitialQuizz(language, req.body.id);
+      const specific_quizz = await getSpecificQuizz(language, req.body.id);
+      const listOfQuizz = [];
+
+
+      const addToListOfQuizz = (array, listOfQuizz) =>
+      {
+        for (let index in array)
+        {
+          const { answers, question, id } = array[index];
+          listOfQuizz.push({ answers, question, id });
+        }
+
+        return listOfQuizz;
       }
 
-      res.status(response.status).send(listOfQuizz); 
+      addToListOfQuizz(specific_quizz, addToListOfQuizz(quizz, listOfQuizz));
 
-    } else {
-      res.status(response.status).send(response.body);
+      res.status(200).send({ language, quizz: listOfQuizz });
+
+    } else
+    {
+      res.status(400).send({ body: "Invalid Language" });
     }
 
 
-  } catch (err) {
-    res.status(500).send({ message: 'Internal Server Error', error: err.message });
+  } catch (error) {
+    res.status(500).send({ message: 'Internal Server Error', error: error.essage });
   }
 
 });
 
 router.post('/add/quizz', async (req, res) => {
+  const { language, question, answers, correct_answer, id } = req.body;
+  
+  if (!language) {
+    return res.status(400).send({ body: 'Language is required' });
+  }
 
+  if(!question) { 
+    return res.status(400).send({ body: 'Please provide the quizz question' });
+  }
+  if(!correct_answer) { 
+    return res.status(400).send({ body: 'Please provide the correct answer' });
+  }
+  if(!answers || answers.length === 0) { 
+    return res.status(400).send({ body: 'Invalid answers' });
+  }
 
   try {
-
-    const { language, quizz, answers, correct_answer, id } = req.body;
-    console.log({ language, quizz, answers, correct_answer, id});
-
-    const respond = await addQuizz({ language, quizz, answers, correct_answer, owner_id: id });
     
+    const respond = await addQuizz({ language, question, answers, correct_answer, owner_id: id });
     res.status(respond.status).send(respond.body);
 
-  } catch (err) {
-      res.status(500).send({ message: 'Internal Server Error', error: err.message });
+    res.send();
+  } catch (error) {
+    res.status(500).send({ message: 'Internal Server Error', error: error.essage });
+  }
+
+});
+
+router.put('/edit/quizz/:quiz_id', async(req, res) => {
+  const question_id = req.params.quiz_id;
+  try{
+    
+    const { language, question, answers, correct_answer, id } = req.body;
+
+
+    const response = await updateQuizz({ language, question, answers, correct_answer, owner_id: id, question_id });
+    res.status(response.status).send(response.body);
+    
+
+  } catch (error) {
+    res.status(500).send({ message: 'Internal Server Error', error: error.essage });
   }
 });
 
-router.put('/edit/quizzes/:quiz_id', (req, res) => {});
+router.delete('/delete/quizz/:quiz_id', async (req, res) => {
+  const question_id = req.params.quiz_id;
+  try{
+    
+    const { id } = req.body;
+      const response = await deleteQuizz(id, question_id);
+      res.status(response.status).send(response.body);
+    
 
-router.delete('/delete/quizzes/quiz_id', (req, res) => {});
+  } catch (error) {
+    res.status(500).send({ message: 'Internal Server Error', error: error.essage });
+  }
+});
+
 
 module.exports = router;
