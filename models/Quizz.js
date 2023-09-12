@@ -7,7 +7,7 @@ const quizzSchema = new mongoose.Schema({
     required: true
   },
 
-  quizz: {
+  question: {
     type: String,
     required: true,
   },
@@ -21,6 +21,10 @@ const quizzSchema = new mongoose.Schema({
   correct_answer: {
     type: String,
     required: true
+  },
+
+  explanation: {
+    type: String
   }
 
 });

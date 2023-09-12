@@ -9,7 +9,7 @@ const specificQuizzSchema = new mongoose.Schema({
 
   owner_id: {
     type: mongoose.ObjectId,
-    ref: 'Quizz',
+    ref: 'User',
     required: true
   },
 }, { timestamps: true });
