@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'user',
         required: true
+    },
+    ask_for_admin: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true});
 
