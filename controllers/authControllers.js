@@ -7,11 +7,11 @@ const SECRET_KEY = process.env.JWT_SECRET_KEY || 'My Secret Key !';
 
 async function login({ email, password }) {
 
-    if(!email) return { status: 400, body: 'Email is required' };
-    if(!password) return { status: 400, body: 'password is required' };
+    if(!email) return { status: 400, body: { message: 'Email is required' } };
+    if(!password) return { status: 400, body: { message: 'password is required' } };
 
     const user = await User.findOne({ email });
-    if(user === null) return { status: 404, body: 'Email or password is wrong' };
+    if(user === null) return { status: 404, body: { message: 'Email or password is wrong' } };
 
     const isSamePassword = await bcrypt.compare(password, user.password);
 
@@ -23,7 +23,7 @@ async function login({ email, password }) {
         return { status: 200, body: { ...response, token } };
 
     } else {
-        return { status: 404, body: 'Email or password is wrong' };
+        return { status: 404, body: { message: 'Email or password is wrong' } };
     }
 }
 

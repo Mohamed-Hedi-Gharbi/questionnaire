@@ -1,7 +1,12 @@
 const { Router } = require('express');
+
 const User = require('../models/User');
+const isAuthenticate = require('../utils/isAuthenticate');
+const Quizz = require('../models/Quizz');
 
 const router = Router();
+
+router.use(isAuthenticate);
 
 router.post('/ask-for-admin', async (req, res) => {
     try {
@@ -20,7 +25,11 @@ router.post('/ask-for-admin', async (req, res) => {
     }
 });
 
-router.post('/start', (req, res) => {});
+router.get('/quiz', async(req, res) => {
+    const listOfQuizz = await Quizz.find();
+
+    res.status(200).send({ body: listOfQuizz });
+});
 
 router.post('/submit', (req, res) => {});
 

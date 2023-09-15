@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const ejs = require('ejs');
+const cors = require('cors');
 
 const { authRouter, adminRouter, userRouter, administrationRouter } = require('./routes');
 const isAuthenticate = require('./utils/isAuthenticate');
@@ -11,7 +13,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors({ 
+    origin: "*"
+}))
 
+app.set('view engine', 'ejs');
 
 const PORT = process.env.PORT || 3000;
 
@@ -21,8 +27,8 @@ const online_DB_URL = process.env.ONLINE_DB_URL;
 app.use('/administration', administrationRouter);
 
 app.use('/auth', authRouter);
-app.use(isAuthenticate);
 app.use('/api/user', userRouter);
+
 app.use(isUserAuthorised);
 app.use('/api/admin', adminRouter);
 
