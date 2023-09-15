@@ -5,7 +5,6 @@ const ejs = require('ejs');
 const cors = require('cors');
 
 const { authRouter, adminRouter, userRouter, administrationRouter } = require('./routes');
-const isAuthenticate = require('./utils/isAuthenticate');
 const isUserAuthorised = require('./utils/isUserAuthorised');
 
 const app = express();

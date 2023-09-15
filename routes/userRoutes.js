@@ -28,7 +28,33 @@ router.post('/ask-for-admin', async (req, res) => {
 router.get('/quiz', async(req, res) => {
     const listOfQuizz = await Quizz.find();
 
-    res.status(200).send({ body: listOfQuizz });
+    const groupingQuiz = {};
+
+    for (let i = 0; i < listOfQuizz.length; ++i){
+        const { language, question, answers, correct_answer, explanation } = listOfQuizz[i];
+        
+        if (language in groupingQuiz) {
+            groupingQuiz[language].push({
+                id: listOfQuizz[i].get('id'),
+                question,
+                answers,
+                correct_answer,
+                explanation
+            });
+        } else {
+            groupingQuiz[language] = [{
+                id: listOfQuizz[i].get('id'),
+                question,
+                answers,
+                correct_answer,
+                explanation
+            }]
+        }
+    }
+
+    console.log({ groupingQuiz });
+
+    res.status(200).send({ body: groupingQuiz });
 });
 
 router.post('/submit', (req, res) => {});
