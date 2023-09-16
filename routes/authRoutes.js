@@ -11,7 +11,7 @@ router.post('/login', async(req, res) => {
         const respond = await login({ email, password });
 
         if(respond.body.token){
-            res.cookie('token', respond.body.token);
+            res.setHeader('Authorization', respond.body.token);
         }
 
         res.status(respond.status).send(respond.body);
@@ -26,10 +26,11 @@ router.post('/signup', async(req, res) => {
     try {
         
         const { email, password, name } = req.body;
+        console.log({ email, password, name });
         const respond = await singup({ email, password, name });
-
+        console.log({ respond });
         if(respond.body.token){
-            res.cookie('token', respond.body.token);
+            res.setHeader('Authorization', respond.body.token);
         }
         
         res.status(respond.status).send(respond.body);

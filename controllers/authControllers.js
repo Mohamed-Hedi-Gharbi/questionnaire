@@ -29,9 +29,9 @@ async function login({ email, password }) {
 
 async function singup({ email, password, name }) {
 
-    if(!email) return { status: 400, body: 'Email is required' };
-    if(!password) return { status: 400, body: 'password is required' };
-    if(!name) return { status: 400, body: 'name is required' };
+    if(!email) return { status: 400, body: { message: 'Email is required' } };
+    if(!password) return { status: 400, body: { message: 'password is required' } };
+    if(!name) return { status: 400, body: { message: 'name is required' } };
 
     const isUserExist = await User.findOne({ email: email });
 
@@ -61,7 +61,7 @@ async function singup({ email, password, name }) {
         }
 
     } else {
-        return { status: 404, body: 'User with this account already exist' };
+        return { status: 404, body: { message: 'User with this account already exist' } };
     }
 }
 

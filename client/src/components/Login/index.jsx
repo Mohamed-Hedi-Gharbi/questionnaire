@@ -1,54 +1,55 @@
 import "./style.css";
 
-import { base_url } from "../../config";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CookiesProvider, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
+import { sendLoginRequest } from "./service";
 
 function Login (){
     const navigate = useNavigate();
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [cookie, setCookie] = useCookies();
 
-    const handleSubmit = e => {
+    const [emailError, setEmailError] = useState(null);
+    const [PasswordError, setPasswordError] = useState(null);
+
+    const [, setCookie] = useCookies();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const options = {
-            method: 'POST',
-            body: JSON.stringify({ email, password }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        if(email === ''){
+            setEmailError('Please enter a valid email');
+            return;
         }
-        fetch(base_url + '/auth/login', options)
-            .then(res => res.json())
-            .then(data => {
-                if(data.token) {
-                    setCookie('token', data.token);
-                    navigate('/home');
-                }
-            })
-            .catch(err => console.log({ err }));
 
-        setPassword('');
-        setEmail('');
+        if(password === '' || password.length < 8) {
+            setPasswordError('Please enter a valid password');
+            return;
+        }
+
+        const response = await sendLoginRequest({ email, password });
+        if(response.error === false) {
+            setCookie('token', response.data.token);
+            navigate('/home');
+        } else {
+            setEmailError(response.data.message);
+        }
     }
 
 
     const handleEmailInput = (event) => {
         setEmail(event.target.value);
+        setEmailError(null);
+        setPasswordError(null);
     };
     
     const handlePasswordInput = (event) => {
         setPassword(event.target.value);
+        setEmailError(null);
+        setPasswordError(null);
     };
-
-    useEffect(() => { 
-        if(cookie.token !== undefined){
-            navigate('/home');
-        }
-    }, []);
     
 
     return (
@@ -66,8 +67,7 @@ function Login (){
                                 value={ email }
                                 onChange={handleEmailInput}
                             />
-                            <div className="email error"></div>
-                            <div className="password error"></div>                   
+                            {emailError ?? <div className="email error">{emailError}</div> }
                             <input
                                 type="password"
                                 placeholder="PASSWORD"
@@ -76,6 +76,7 @@ function Login (){
                                 value={ password }
                                 onChange={handlePasswordInput}
                             />
+                            {PasswordError ?? <div className="email error">{PasswordError}</div> }
                             <button type="submit" className="opacity">SUBMIT</button>
                         </form>
                         <div className="register-forget opacity">

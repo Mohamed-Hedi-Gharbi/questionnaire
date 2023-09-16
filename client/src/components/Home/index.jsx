@@ -1,20 +1,30 @@
-import { useNavigate } from "react-router-dom";
-import { CookiesProvider, useCookies } from "react-cookie";
-import { useEffect } from "react";
+import "./style.css";
 
+import { useEffect } from "react";
+import { isUserAuthenticate } from "./service";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import Main from "../Main";
 
 function Home() {
+    const [cookies, setCookie] = useCookies('token');
     const navigate = useNavigate();
-    const [cookie, setCookie] = useCookies();
-    
-    useEffect(() => { 
-        if(cookie.token === undefined){
-            navigate('/login');
+
+    useEffect(() => {
+        if(cookies.token){
+            console.log({ cookies });
+            isUserAuthenticate(cookies.token).then(isAuthenticate => {
+                if (isAuthenticate === false) {
+                    setCookie('token', '', { expires: new Date(0)});
+                    navigate('/login');
+                }
+            })
         }
-    }, []);
-    
+        
+    });
+
     return (
-        <p>Hi</p>
+        <Main />            
     );
 }
 

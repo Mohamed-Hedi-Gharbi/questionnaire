@@ -1,0 +1,24 @@
+.btn-quiz-container a{
+  color: inherit
+}
+
+.quiz-btn{
+  width: 200px;
+  height: 100px;
+  background-color: wheat;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  color: black;
+  font-size: 1.5rem;
+  font-family: monospace;
+}
+
+.btn-quiz-container{
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  margin-top: 20px;
+}

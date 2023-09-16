@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 const ejs = require('ejs');
 const cors = require('cors');
 
+require('./init');
+
 const { authRouter, adminRouter, userRouter, administrationRouter } = require('./routes');
 const isUserAuthorised = require('./utils/isUserAuthorised');
 
@@ -35,7 +37,7 @@ app.use('/api/admin', adminRouter);
 app.use((req, res) => res.status(404).send({ message: 'Invalid API request' }));
 app.use((err, req, res, next) => res.status(500).send({ message: 'Internal Server Error' }));
 
-mongoose.connect(online_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('connection successfull'))
     .catch(err => console.log(err));
 
