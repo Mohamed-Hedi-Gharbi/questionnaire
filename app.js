@@ -22,8 +22,7 @@ app.set('view engine', 'ejs');
 
 const PORT = process.env.PORT || 3000;
 
-const dbURL = process.env.DB_URL;
-const online_DB_URL = process.env.ONLINE_DB_URL;
+const DB_URL = process.env.ONLINE_DB_URL;
 
 app.use('/administration', administrationRouter);
 
@@ -37,7 +36,7 @@ app.use('/api/admin', adminRouter);
 app.use((req, res) => res.status(404).send({ message: 'Invalid API request' }));
 app.use((err, req, res, next) => res.status(500).send({ message: 'Internal Server Error' }));
 
-mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('connection successfull'))
     .catch(err => console.log(err));
 
