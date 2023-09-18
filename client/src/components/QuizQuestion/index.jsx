@@ -17,7 +17,7 @@ function QuizQuestion({ quiz, handleUserClicks }) {
                 value={answer} 
                 key={i}
                 onChange={handleUserClicks}
-                required
+                
               /> {answer}
             </label><br/>
           </>

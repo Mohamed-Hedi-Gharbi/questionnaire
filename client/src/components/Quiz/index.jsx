@@ -3,14 +3,17 @@ import { useParams } from "react-router-dom"
 import { getQuiz, sendData } from "./service";
 import { useCookies } from "react-cookie";
 import QuizQuestion from "../QuizQuestion";
+import { Modal } from "../"
 
 
 function Quiz() {
   const params = useParams();
   const [quiz, setQuiz] = useState({ language: "", listOfQuiz: [] });
   const [answers, setAnswers] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState({ text: "", title: ""});
 
-  const [cookie, setCookie] = useCookies('token');
+  const [cookie, ] = useCookies('token');
 
   function handleUserClick(e) {
 
@@ -27,7 +30,18 @@ function Quiz() {
       data.push({ id: i, answer: answers[i] });
     }
 
-    sendData({ language: quiz.language, data, token: cookie.token });
+    sendData({ language: quiz.language, data, token: cookie.token }).then(({ data, error }) => {
+      if(error === false){
+        if(data.correct_answer >= 10){
+          setModalData({ text: `${data.correct_answer} sont correct`, title: 'Admis'})
+        } else {
+          setModalData({ text: `${data.wrong_answer} sont incirrect`, title: 'Redouble'})
+        }
+
+        console.log({ data, error, showModal, modalData });
+        setShowModal(true);
+      }
+    })
     setAnswers({});
   }
 
@@ -41,6 +55,8 @@ function Quiz() {
 
   return (
     <>
+      {showModal ? <Modal title={modalData.title} text={modalData.text} /> : 
+      <>
       <h2>{quiz.language} Quiz</h2>
       <form className="listOfQuiz" onSubmit={handleSubmit}>
         { quiz.listOfQuiz.length !== 0 &&
@@ -48,6 +64,7 @@ function Quiz() {
         }
         <button type="submit">Submit</button>
       </form>
+      </>}
     </>
   )
 }

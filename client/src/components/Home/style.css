@@ -1,3 +1,10 @@
-button{ 
-  margin: 20px;
+.logoutButton{
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  border: 2px solid white;
+  padding: 5px;
+  border-radius: 50%;
+
+  cursor: pointer;
 }

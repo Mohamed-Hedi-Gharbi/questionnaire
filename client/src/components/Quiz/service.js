@@ -19,8 +19,6 @@ async function getQuiz(id, token) {
 
 async function sendData({ data, token, language }) {
   
-  console.log(data);
-
   const options = {
     method: 'POST',
     body: JSON.stringify({ language, data }),

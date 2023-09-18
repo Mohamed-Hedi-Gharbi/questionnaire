@@ -7,7 +7,7 @@ import Main from "./Main";
 import PrivateRoutes from "./PrivateRoutes";
 import Quiz from "./Quiz";
 import QuizQuestion from "./QuizQuestion";
-
+import Modal from "./Modal";
 
 export {
     Signup,
@@ -18,5 +18,6 @@ export {
     Nav,
     Main,
     Quiz,
-    QuizQuestion
+    QuizQuestion,
+    Modal
 }
