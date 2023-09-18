@@ -3,6 +3,8 @@ const { Router } = require('express');
 const User = require('../models/User');
 const isAuthenticate = require('../utils/isAuthenticate');
 const Quizz = require('../models/Quizz');
+const Passed_Quiz = require('../models/Passed_Quiz');
+const getUserQuiz = require('../utils/user_results');
 
 const router = Router();
 
@@ -88,17 +90,29 @@ router.get('/quiz/:language', async(req, res) => {
 
 router.post('/submit', async (req, res) => {
     const { language, data } = req.body;
+
     const listOfQuiz = await Quizz.find({ language });
+    try {
+        await savePassedQuiz(req.body.id, data);
+    } catch (error) {
+        console.error(error);
+    }
 
     const { correct_answer, wrong_answer } = calculAnswer(data, listOfQuiz);
 
     res.status(200).send({ correct_answer, wrong_answer });
 });
 
-router.get('/results', (req, res) => {});
+router.get('/results', async(req, res) => {
+    const id = req.body.id;
+    
+    const response = await getUserQuiz(id);
+
+    res.send(response);
+});
 
 function shuffleArray(arr) {
-    const shuffledArray = [...arr]; 
+    const shuffledArray = [...arr];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
@@ -123,6 +137,13 @@ function calculAnswer(data, listOfQuiz){
     }
 
     return { correct_answer, wrong_answer };
+}
+
+async function savePassedQuiz(id, data){
+    const listOfQuiz = data.map(_ => ({ quiz_id: _.id, answer: _.answer }));
+    const q = new Passed_Quiz({ user_id: id, quiz: listOfQuiz });
+
+    q.save();
 }
 
 module.exports = router;

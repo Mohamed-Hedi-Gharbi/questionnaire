@@ -1,4 +1,11 @@
+require('dotenv').config();
 const nodemailer = require('nodemailer');
+
+
+console.log( {auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+}})
 
 const transporter = nodemailer.createTransport({
     host: "smtp-mail.outlook.com",
@@ -8,14 +15,14 @@ const transporter = nodemailer.createTransport({
         ciphers: "SSLv3"
     },
     auth: {
-        user: "mohamedhedigharbi@outlook.fr",
-        pass: "9orenkarim1234"
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 });
 
 function makeEmail(receiver, text) {
     return {
-        from: "mohamedhedigharbi@outlook.fr",
+        from: process.env.EMAIL_USER,
         subject: "E-mail automatique",
         to: receiver,
         text
@@ -29,10 +36,11 @@ function getMessageResponse() {
         } else {
             return { error: false, message: info.response };
         }
+
     }
 }
 
-function sendEmail({ receiver, text}){
+function sendEmail({ receiver, text }){
     transporter.sendMail(makeEmail(receiver, text), getMessageResponse());
 }
 

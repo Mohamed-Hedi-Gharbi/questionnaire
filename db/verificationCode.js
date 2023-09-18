@@ -19,6 +19,16 @@ async function saveCode({ code, ip }) {
         return { message: 'Code saved', error: false };
 
     } else {
+
+        const givenDate   = new Date(isCodeExist.updatedAt);
+        const currentDate = new Date()
+        const minutesDiff = Math.abs(Math.floor((((givenDate - currentDate) / 1000) % 3600) / 60));
+
+        if(minutesDiff >= 5){
+            await isCodeExist.updateOne({ code });
+            return { message: 'Code updated', error: false };
+        }
+
         return { message: 'Already exist', error: true };
     }
 }

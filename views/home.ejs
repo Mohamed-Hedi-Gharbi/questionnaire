@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+  <main>
+    <div class="users-list-container">
+
+      <% if (users.length === 0) { %>
+      
+        <h1>You don't have any user yet</h1>
+
+      <% } else { %>
+
+        <div class="user-info-header">
+          <span class="a">Username</span>
+          <span class="b">Email</span>
+          <span class="c">Number Of Quizzes</span>
+          <span class="d">Most Passed Quiz</span>
+        </div>
+
+        <% users.forEach(user => { %>
+
+          <a href="user/<%= user.id %>">
+            <div class="user-info">
+
+              <span class="a">
+                <%= user.name %>
+              </span>
+
+              <span class="b">
+                <%= user.email %>
+              </span>
+
+              <span class="c">
+                <%= user.quizzPassedNb %>
+              </span>              
+
+              <span class="d">
+                <%= user.mostPassedLanguage %>
+              </span>
+
+            </div>
+          </a>
+
+        <% }); %>
+      <% } %>
+    </div>
+  </main>
+</body>
+</html>

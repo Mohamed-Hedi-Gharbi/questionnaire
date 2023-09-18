@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/user.css">
+
+  <style>
+    img{
+      margin-right: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="user-card">
+      <div class="image-container">
+        <img src="/assets/user.png" alt="" width="300px">
+      </div>
+      <div class="user-info">
+          <h1><%= user.name %></h1>
+          <p>Email<%= user.email %></p>
+          <p>User created at: <%= user.created_at %></p>
+          <p>Number of quizzed user pass: <%= user.quizzPassedNb %></p>
+          <p>Most Quiz Language user pass: <%= user.mostPassedLanguage %></p>
+      </div>
+      <div>
+        <button style="background-color: red;">
+          Delete 
+        </button>
+      </div>
+    </div>
+</header>
+<section>
+  <% for (let i = 0; i < user.quizzes.length; i++) { %>
+      <h2><%= user.quizzes[i].language %></h2>
+
+      <div class="s-container">
+        <% for (let j = 0; j < user.quizzes[i].quizz.length; ++j) { %>
+          <div class="quiz-container <%= user.quizzes[i].quizz[j].is_correct ? 'correctQuiz' : 'wrongQuiz' %>">
+            <p><b>Question:</b> <%= user.quizzes[i].quizz[j].quiz %></p>
+          <p><b>List Of Answers</b></p>
+    
+          <div class="answers-list">
+            <% for (let z = 0; z < user.quizzes[i].quizz[j].answers.length; ++z) { %>
+              <li><%= user.quizzes[i].quizz[j].answers[z] %></li>
+            <% }%>
+          </div>
+    
+          <div class="correct_answer">
+            <p><b>Correct Answer:</b> <%= user.quizzes[i].quizz[j].correct_answer %></p>
+          </div>
+    
+          <div class="user_answer">
+            <p><b>User Answer:</b> <%= user.quizzes[i].quizz[j].user_answer %></p>
+          </div>
+    
+        </div>
+        <% }%>
+      </div>
+
+  <% }%>
+</section>
+</body>
+</html>

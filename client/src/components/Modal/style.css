@@ -19,4 +19,14 @@
   background-color: white;
   width: 600px;
   height: 300px;
+  color: black;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around
+}
+
+button{
+  border-color: white;
 }

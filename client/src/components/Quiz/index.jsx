@@ -3,7 +3,9 @@ import { useParams } from "react-router-dom"
 import { getQuiz, sendData } from "./service";
 import { useCookies } from "react-cookie";
 import QuizQuestion from "../QuizQuestion";
-import { Modal } from "../"
+import { Modal } from "../";
+
+import img from "./arrow.png"
 
 
 function Quiz() {
@@ -53,17 +55,25 @@ function Quiz() {
     });
   }, []);
 
+
+  function backToHomePage() {
+    window.location = '/home';
+  }
+
   return (
     <>
       {showModal ? <Modal title={modalData.title} text={modalData.text} /> : 
       <>
-      <h2>{quiz.language} Quiz</h2>
-      <form className="listOfQuiz" onSubmit={handleSubmit}>
-        { quiz.listOfQuiz.length !== 0 &&
-          quiz.listOfQuiz.map(q => <QuizQuestion key={q.id} quiz={q} handleUserClicks={handleUserClick} />)
-        }
-        <button type="submit">Submit</button>
-      </form>
+        <div className="back" onClick={backToHomePage}>
+          <img src={img} alt="" />
+        </div>
+        <h2>{quiz.language} Quiz</h2>
+        <form className="listOfQuiz" onSubmit={handleSubmit}>
+          { quiz.listOfQuiz.length !== 0 &&
+            quiz.listOfQuiz.map(q => <QuizQuestion key={q.id} quiz={q} handleUserClicks={handleUserClick} />)
+          }
+          <button type="submit">Submit</button>
+        </form>
       </>}
     </>
   )
