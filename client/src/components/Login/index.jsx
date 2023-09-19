@@ -1,4 +1,5 @@
 import "./style.css";
+import img from "./image.png";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -58,7 +59,7 @@ function Login (){
                 <div className="login-container">
                     <div className="circle circle-one"></div>
                     <div className="form-container">
-                        <img src="image.png" alt="illustration" className="illustration" />
+                        <img src={img} alt="illustration" className="illustration" />
                         <h1 className="opacity">LOGIN</h1>
                         <form id="login-form" onSubmit={handleSubmit}>
                             <input type="email"

@@ -1,0 +1,50 @@
+/* Style the error message */
+.error-message {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 100vh;
+  
+  display: grid;
+  place-items: center;
+}
+
+.error-message p {
+  font-size: 5rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.error-text{
+  display: flex;
+}
+
+p:nth-child(even){
+  animation: bounce_up 1s infinite alternate;
+}
+
+p:nth-child(odd){
+  animation: bounce_down 1s infinite alternate;
+}
+
+
+/* Define the bounce animation */
+@keyframes bounce_up {
+  0% {
+      transform: translateY(0);
+  }
+  100% {
+      transform: translateY(-24px);
+  }
+}
+
+@keyframes bounce_down {
+  0% {
+      transform: translateY(-24px);
+  }
+  100% {
+      transform: translateY(0);
+  }
+}

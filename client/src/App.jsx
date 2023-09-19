@@ -16,7 +16,7 @@ function App() {
 
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='*' element={<NoMuch />} />
+        <Route path='*' element={<Navigate to="/home" />} />
       </Routes>
     </Router>
   );

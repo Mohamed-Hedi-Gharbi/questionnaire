@@ -1,4 +1,5 @@
 import "./style.css";
+import img from "../Login/image.png";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -73,7 +74,7 @@ function Signup (){
                 <div className="login-container">
                     <div className="circle circle-one"></div>
                     <div className="form-container">
-                        <img src="image.png" alt="illustration" className="illustration" />
+                        <img src={img} alt="illustration" className="illustration" />
                         <h1 className="opacity">Sign Up</h1>
                         <form onSubmit={handleSubmit}>
 
@@ -105,7 +106,7 @@ function Signup (){
                             
                             <button type="submit" className="opacity">Sign Up</button>
                             <div className="register-forget opacity">
-                                
+                                <a href="/login">Login</a>
                             </div>
                         </form>
                         <div className="error-message"></div>
