@@ -30,7 +30,7 @@
             const code = document.getElementById('verification-code').value;
 
             if (code === '') {
-                alert('ti ekkkkteb');
+                alert('Please enter the confirmation code.');
             } else {
                 const response = await fetch('/administration/verification-code', { 
                     method: 'POST', 

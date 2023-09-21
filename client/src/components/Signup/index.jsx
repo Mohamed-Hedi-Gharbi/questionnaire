@@ -109,7 +109,6 @@ function Signup (){
                                 <a href="/login">Login</a>
                             </div>
                         </form>
-                        <div className="error-message"></div>
                     </div>
                     <div className="circle circle-two"></div>
                 </div>

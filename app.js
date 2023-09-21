@@ -14,6 +14,7 @@ const Passed_Quiz = require('./models/Passed_Quiz');
 
 const app = express();
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

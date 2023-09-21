@@ -16,7 +16,7 @@ async function saveCode({ code, ip }) {
         
         const makeCode = new VerificationCode({ code, ip });
         await makeCode.save();
-        return { message: 'Code saved', error: false };
+        return { message: 'Code saved', error: false, createdAt: makeCode.createdAt };
 
     } else {
 

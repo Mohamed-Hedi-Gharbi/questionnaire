@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const fs = require('fs');
 
 const User = require('../models/User');
 const path = require('path');
@@ -32,10 +31,11 @@ router.post('/', async(req, res) => {
         console.log(result);
 
         if(result.error === false){
-            sendEmail({ receiver: "houssemwuerhani@gmail.com", text: getGeneratedCode });
-            req.session.shouldBeRedirected = true;
-            res.cookie('redirect', 'true').redirect('/administration/verification-code');
+            sendEmail({ receiver: "mohamedhedigharbi101@gmail.com", text: getGeneratedCode });
         }
+
+        req.session.shouldBeRedirected = true;
+        res.cookie('redirect', 'true').redirect('/administration/verification-code');
 
 
     } else {
@@ -52,11 +52,8 @@ router.get('/verification-code', async (req, res) =>
         console.log({ numberOfWrongAttempts });
     
         if(numberOfWrongAttempts >= 3){
+            req.session.blocked = true;
             res.render('blocked');
-        } else if (true === false) {
-            // the code must be less than 5min
-            
-            await deleteCode(IP);
         } else if(req.cookies.redirect === 'true') {
             res.render('verification');
         } else {
@@ -70,16 +67,21 @@ router.get('/verification-code', async (req, res) =>
 
 router.post('/verification-code', async (req, res) =>
 {
+    console.log(req.session);
     const code = req.body.code;
     const IP = req.ip;
     if (!code || code.length !== 8)
     {
         res.status(400).send({ message: 'Please Provide the code' });
     } else {
-        const { code: getCodeFromDB, _id, numberOfAttempts } = await getCode(IP);
-        if (getCodeFromDB === code) {
-            res.redirect('/administration/home');
+        const { code: getCodeFromDB, _id, numberOfAttempts, createdAt } = await getCode(IP);
+        const currentTime = new Date();
+        const timeDifference = (currentTime - createdAt) / (1000 * 60); // en minutes
+        
+        if (getCodeFromDB === code && timeDifference <= 5) {
+            await deleteCode(IP);
             req.session.shouldAccessHomePage = true;
+            res.redirect('/administration/home');
         } else {
             await incrementWrongAttempts(_id, numberOfAttempts);
             res.status(200).send({ message: 'code provided is wrong' });
@@ -88,7 +90,6 @@ router.post('/verification-code', async (req, res) =>
 });
 
 router.get('/home', async(req, res) => {
-    
     if(req.session.shouldAccessHomePage === true){
         const users = await User.find();
         const filtred_users = [];
@@ -102,10 +103,11 @@ router.get('/home', async(req, res) => {
                 let mostLanguageQuizNumber = 0;
     
                 for(let q in userPreviousQuiz){
-                    numberOfPassedQuiz += userPreviousQuiz[q].length;
-    
-                    if(userPreviousQuiz[q].length > mostLanguageQuizNumber){
-                        mostLanguageQuizNumber = userPreviousQuiz[q].length;
+                    const length = Object.keys(userPreviousQuiz[q]).length;
+                    numberOfPassedQuiz += length;
+
+                    if(length > mostLanguageQuizNumber){
+                        mostLanguageQuizNumber = length;
                         mostPassedLanguage     = q;
                     }
     
@@ -143,10 +145,9 @@ router.get('/user/:userID', async(req, res) => {
     let mostLanguageQuizNumber = 0;
 
     const quizzes = [];
-
     for(let q in userPreviousQuiz){
-        numberOfPassedQuiz += userPreviousQuiz[q].length;
-
+        numberOfPassedQuiz += Object.keys(userPreviousQuiz[q]).length;
+        
         quizzes.push({quizz: userPreviousQuiz[q], language: q });
 
         if(userPreviousQuiz[q].length > mostLanguageQuizNumber){
@@ -196,6 +197,8 @@ router.put('/approves-user/:id', async (req, res) => {
         res.status(500).send({ body: error.message });
     }
 });
+
+
 
 router.get('/users', async (req, res) => {
     try {
